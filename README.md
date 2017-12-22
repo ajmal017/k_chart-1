@@ -1,4 +1,4 @@
 # k_chart
 
 Plot candlestick for time series data
-as Pandas DataFrame Function
+set the plot function as Pandas DataFrame Function
