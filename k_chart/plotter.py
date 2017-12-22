@@ -10,14 +10,10 @@ from matplotlib.finance import candlestick_ohlc
 def plot_ohlc(ax, ohlc):
     candlestick_ohlc(ax, ohlc, colorup='r', colordown='g')
     
-def plot_main(ax, indicator):
-    xax = np.arange(len(indicator))
-    ax.plot(xax, indicator)
+def plot_y(ax, y):
+    xax = np.arange(len(y))
+    ax.plot(xax, y)
     
-def plot_vol(ax, vol):
-    xax = np.arange(len(vol))
-    ax.bar(xax, vol)
-    
-def plot_sub(ax, indicator):
-    xax = np.arange(len(indicator))
-    ax.plot(xax, indicator)
+def plot_bar(ax, h): #h: height of bar
+    xax = np.arange(len(h))
+    ax.bar(xax, h)
