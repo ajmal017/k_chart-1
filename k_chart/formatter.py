@@ -65,8 +65,6 @@ def _get_freq(w, l, u=50, s=5):
         if d > l%(f+i):
             d = l%(f+i)
             freq = f+i
-    print(freq)
-    print(l)
     return freq
 
 def set_xlocator(ax, tickers, fig):
