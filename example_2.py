@@ -14,7 +14,7 @@ source_data = pd.read_csv('spy.csv', parse_dates=True, index_col=0)
 
 # Calc
 df=source_data.copy()
-dfw = df.resample(rule='W').mean()
+dfw = df.resample(rule='m').mean()
 # calc sub_indicator
 df['diff'] = df['Adj Close']/df['Close']
 # calc main_indicator

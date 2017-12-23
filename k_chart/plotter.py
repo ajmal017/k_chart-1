@@ -16,7 +16,7 @@ def plot_y(ax, y):
     
 def plot_bar(ax, h): #h: height of bar
     xax = np.arange(len(h))
-    ax.bar(xax, h)
+    ax.bar(xax, h, width=0.2)
     
 def plot_fill(ax, y): #h: height of bar
     xax = np.arange(len(y))

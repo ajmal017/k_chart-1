@@ -61,7 +61,7 @@ def k_chart(self,
         # Set Axis
         ax_vol = fmt.set_ax_format(ax_vol, fig, ylabel=volume_col)
         # ---
-        plotter.plot_fill(ax_vol, self[volume_col].values)
+        plotter.plot_bar(ax_vol, self[volume_col].values)
         # ---
         ax_vol = fmt.zoom_yaxis(ax_vol, 0.1)
         
