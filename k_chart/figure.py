@@ -14,6 +14,7 @@ def set_fig(w, h, rows=1, width_factor=3.0, height_factor=0.5, height_ratios=3):
         w = f_size[0]*width_factor
         h = f_size[1]*height_factor*(height_ratios+rows-1)
     fig = plt.figure(figsize=(w, h))
+    fig.get_tight_layout()
     return fig
 
 def get_rows(volume_col, sub_indicator_cols):

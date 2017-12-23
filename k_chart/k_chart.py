@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Author: easy00000000
-Version: 0.12
-Date: 2017-12-22
+Version: 0.20
+Date: 2017-12-23
 """
 import numpy as np
 import pandas as pd
@@ -31,14 +31,14 @@ def k_chart(self,
     plt.setp(ax_main.get_xticklabels(), rotation=0)
     ax_vol = None
     ax_sub = None
-    if volume_col != None:
+    if volume_col is not None:
         ax_vol = fig.add_subplot(gs[1, 0], sharex=ax_main)
         plt.setp(ax_main.get_xticklabels(), visible=False)
-        if sub_indicator_cols != None:
+        if sub_indicator_cols is not None:
             ax_sub = fig.add_subplot(gs[2, 0], sharex=ax_main)
             plt.setp(ax_vol.get_xticklabels(), visible=False)
     else:
-        if sub_indicator_cols != None:
+        if sub_indicator_cols is not None:
             ax_sub = fig.add_subplot(gs[1, 0], sharex=ax_main)
             plt.setp(ax_main.get_xticklabels(), visible=False)
 
@@ -57,18 +57,22 @@ def k_chart(self,
         plotter.plot_y(ax_main, self[main_indicator_cols].values)
     
     # Plot Volume Figure
-    if ax_vol != None:
+    if ax_vol is not None:
         # Set Axis
         ax_vol = fmt.set_ax_format(ax_vol, fig, ylabel=volume_col)
         # ---
         plotter.plot_bar(ax_vol, self[volume_col].values)
+        # ---
+        ax_vol = fmt.zoom_yaxis(ax_vol, 0.1)
         
     # Plot Sub_Indicator Figure
-    if ax_sub != None:
+    if ax_sub is not None:
         # Set Axis
         ax_sub = fmt.set_ax_format(ax_sub, fig, ylabel=sub_indicator_cols)
         # ---
         plotter.plot_y(ax_sub, self[sub_indicator_cols].values)
+        # ---
+        ax_sub = fmt.zoom_yaxis(ax_sub, 0.1)
     
 pd.DataFrame.k_chart = k_chart
     

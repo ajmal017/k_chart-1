@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Author: easy00000000
-Version: 0.12
-Date: 2017-12-22
+Version: 0.20
+Date: 2017-12-23
 """
 import numpy as np
 import matplotlib.ticker as mticker
@@ -37,7 +37,7 @@ def format_ohlc(df, formated_cols=['open', 'high', 'low', 'close']):
     return np_ohlc
 
 def set_ax_format(ax, fig, tickers=None, xlabel=None, ylabel=None):
-    if tickers.__sizeof__() > 16:
+    if tickers is not None:
         ax = set_ax_limit(ax, tickers)    
         def format_date(x, pos=None):
             if x<0 or x>len(tickers)-1:
@@ -45,10 +45,22 @@ def set_ax_format(ax, fig, tickers=None, xlabel=None, ylabel=None):
             return tickers[int(x)]    
         ax.xaxis.set_major_formatter(mticker.FuncFormatter(format_date))    
         ax = set_ax_locator(ax, tickers, fig)
-    if xlabel != None:
+    if xlabel is not None:
         ax.set_xlabel(xlabel)
-    if ylabel != None:
+    if ylabel is not None:
         ax.set_ylabel(ylabel)
+    return ax
+
+def zoom_yaxis(ax, f):
+    '''
+    f : zoom factor
+    f = 0 : unchange
+    f < 0 : zoom in
+    f > 0 : zoom out
+    '''
+    l = ax.get_ylim()
+    new_l = (l[0] + l[1])/2 + np.array((-0.5, 0.5)) * (l[1] - l[0]) * (1 + f)
+    ax.set_ylim(new_l)
     return ax
 
 def _get_freq(w, l, u=50, s=5):
