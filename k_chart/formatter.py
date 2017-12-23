@@ -38,29 +38,17 @@ def format_ohlc(df, formated_cols=['open', 'high', 'low', 'close']):
 
 def set_ax_format(ax, fig, tickers=None, xlabel=None, ylabel=None):
     if tickers is not None:
-        ax = set_ax_limit(ax, tickers)    
+        ax = set_xlimit(ax, tickers)    
         def format_date(x, pos=None):
             if x<0 or x>len(tickers)-1:
                 return ''
             return tickers[int(x)]    
         ax.xaxis.set_major_formatter(mticker.FuncFormatter(format_date))    
-        ax = set_ax_locator(ax, tickers, fig)
+        ax = set_xlocator(ax, tickers, fig)
     if xlabel is not None:
         ax.set_xlabel(xlabel)
     if ylabel is not None:
         ax.set_ylabel(ylabel)
-    return ax
-
-def zoom_yaxis(ax, f):
-    '''
-    f : zoom factor
-    f = 0 : unchange
-    f < 0 : zoom in
-    f > 0 : zoom out
-    '''
-    l = ax.get_ylim()
-    new_l = (l[0] + l[1])/2 + np.array((-0.5, 0.5)) * (l[1] - l[0]) * (1 + f)
-    ax.set_ylim(new_l)
     return ax
 
 def _get_freq(w, l, u=50, s=5):
@@ -77,20 +65,35 @@ def _get_freq(w, l, u=50, s=5):
         if d > l%(f+i):
             d = l%(f+i)
             freq = f+i
+    print(freq)
+    print(l)
     return freq
 
-def set_ax_locator(ax, tickers, fig):
+def set_xlocator(ax, tickers, fig):
     fig_width = fig.get_size_inches()[0] * fig.dpi
     num_tickers = len(tickers)
     freq = _get_freq(fig_width, num_tickers)
-    ax.xaxis.set_major_locator(mticker.MaxNLocator(freq, prune='both'))
+    if freq < num_tickers :
+        ax.xaxis.set_major_locator(mticker.MaxNLocator(freq, prune='both'))
     return ax
     
-def set_ax_limit(ax, tickers):
+def set_xlimit(ax, tickers):
     xax = np.arange(len(tickers))
     xmin = xax[0]-1
     xmax = xax[-1]+1
     ax.set_xlim(xmin, xmax)
+    return ax
+
+def zoom_yaxis(ax, f):
+    '''
+    f : zoom factor
+    f = 0 : unchange
+    f < 0 : zoom in
+    f > 0 : zoom out
+    '''
+    l = ax.get_ylim()
+    new_l = (l[0] + l[1])/2 + np.array((-0.5, 0.5)) * (l[1] - l[0]) * (1 + f)
+    ax.set_ylim(new_l)
     return ax
 
 def set_datetime_format(dt):
