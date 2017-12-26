@@ -7,7 +7,7 @@ Created on Fri Dec 22 23:07:08 2017
 import numpy as np
 import pandas as pd
 
-from k_chart import k_chart
+from KChart_Code import k_chart
 
 # Load data
 source_data = pd.read_csv('spy.csv', parse_dates=True, index_col=0)

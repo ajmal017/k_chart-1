@@ -7,9 +7,9 @@ Date: 2017-12-23
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from k_chart import figure
-from k_chart import formatter as fmt
-from k_chart import plotter
+from KChart_Code import figure
+from KChart_Code import formatter as fmt
+from KChart_Code import plotter
 
 # Plot Candlestick
 def k_chart(self, 
