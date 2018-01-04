@@ -1,0 +1,3 @@
+C:\Users\E\AppData\Local\conda\conda\envs\Keras_TensorFlow\lib
+copy KChart C:\Users\E\AppData\Local\conda\conda\envs\Keras_TensorFlow\lib
+copy Algorithm C:\Users\E\AppData\Local\conda\conda\envs\Keras_TensorFlow\lib

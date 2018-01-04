@@ -55,7 +55,7 @@ def _mbi_(p,b,h,l):
             if pos>i:
                 p[pos] = h[pos]
             break
-    mbi = p+abs(b)
+    mbi = p+b
     return mbi
 
 def _mpk2_(b,h):
