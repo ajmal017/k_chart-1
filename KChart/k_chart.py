@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Author: easy00000000
-Version: 0.20
-Date: 2017-12-23
+Version: 0.31
+Date: 2018-01-04
 """
 import numpy as np
 import pandas as pd
@@ -16,7 +16,9 @@ def k_chart(self,
             figsize_width=-1, figsize_height=-1, 
             main_indicator_cols=None, 
             volume_col=None, 
-            sub_indicator_cols=None):
+            sub_indicator_cols=None,
+            bi_cols=None,
+            ): 
     
     # Set rows of figure
     rows = figure.get_rows(volume_col, sub_indicator_cols)
@@ -53,24 +55,38 @@ def k_chart(self,
     # ---
     plotter.plot_ohlc(ax_main, np_ohlc)
     # ---
-    if main_indicator_cols != None:        
-        plotter.plot_y(ax_main, self[main_indicator_cols].values)
+    if main_indicator_cols is not None: 
+        for i, col in enumerate(main_indicator_cols):
+            plotter.plot_y(ax_main, self[col].values, label=main_indicator_cols[i])
+    # ---    
+    if bi_cols is not None:
+        # lines
+        lw = ['1.','0.8','0.6','0.6','0.6','0.6']
+        ls = ['-','--','--','--','--','--']
+        color = ['black','blue','red','blue','blue','blue']
+        for i, col in enumerate(bi_cols):
+            if i<len(lw):
+                plotter.plot_bi(ax_main, self[col].values, label=bi_cols[i], lw=lw[i], ls=ls[i], color=color[i])
     
     # Plot Volume Figure
     if ax_vol is not None:
         # Set Axis
-        ax_vol = fmt.set_ax_format(ax_vol, fig, ylabel=volume_col)
+        vs = fmt.dec(min(self[volume_col].values))
+        vol_label = 'Volume (' + '{:1.0e}'.format(vs) + ')'
+        ax_vol = fmt.set_ax_format(ax_vol, fig, ylabel=vol_label)
         # ---
-        plotter.plot_bar(ax_vol, self[volume_col].values)
+        for i, col in enumerate(volume_col):
+            plotter.plot_bar(ax_vol, self[col].values/vs)
         # ---
         ax_vol = fmt.zoom_yaxis(ax_vol, 0.1)
         
     # Plot Sub_Indicator Figure
     if ax_sub is not None:
         # Set Axis
-        ax_sub = fmt.set_ax_format(ax_sub, fig, ylabel=sub_indicator_cols)
+        ax_sub = fmt.set_ax_format(ax_sub, fig, ylabel='Indicator')
         # ---
-        plotter.plot_y(ax_sub, self[sub_indicator_cols].values)
+        for i, col in enumerate(sub_indicator_cols):
+            plotter.plot_y(ax_sub, self[col].values, label=sub_indicator_cols[i])
         # ---
         ax_sub = fmt.zoom_yaxis(ax_sub, 0.1)
     

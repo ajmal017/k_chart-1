@@ -12,6 +12,14 @@ try:
 except ImportError:
     izip = zip
 
+def dec(v):
+    d = 1e1
+    vs = v/d
+    while vs>1:
+        d=d*10
+        vs = v/d
+    return d
+
 def _match_col(col, columns):
     for c in columns:
         if col == c.lower():

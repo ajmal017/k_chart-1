@@ -1,23 +1,43 @@
 # -*- coding: utf-8 -*-
 """
 Author: easy00000000
-Version: 0.02
-Date: 2017-12-22
+Version: 0.03
+Date: 2018-01-03
 """
 import numpy as np
 from matplotlib.finance import candlestick_ohlc
+from matplotlib.lines import Line2D
 
 def plot_ohlc(ax, ohlc):
     candlestick_ohlc(ax, ohlc, colorup='r', colordown='g')
     
-def plot_y(ax, y):
+def plot_y(ax, y, label=None):
     xax = np.arange(len(y))
-    ax.plot(xax, y)
+    ax.plot(xax, y, label=label)
+    ax.legend()
     
-def plot_bar(ax, h): #h: height of bar
+def plot_bar(ax, h, width=0.2): #h: height of bar
     xax = np.arange(len(h))
-    ax.bar(xax, h, width=0.2)
+    ax.bar(xax, h, width=width)
     
 def plot_fill(ax, y): #h: height of bar
     xax = np.arange(len(y))
     ax.fill_between(xax, 0, y)
+    
+def plot_bi(ax, bi, label=None, lw=1., ls='-', color='blue'):
+    x = []
+    y = []
+    for i in range(len(bi)):
+        if bi[i] > 0 :
+            x.append(i)
+            y.append(bi[i])
+        elif bi[i] < 0 :
+            x.append(i)
+            y.append(-bi[i])
+    line = Line2D(x, y,
+                  label=label,
+                  lw=lw,
+                  color=color,
+                  ls=ls)
+    ax.add_line(line)
+    ax.legend()
