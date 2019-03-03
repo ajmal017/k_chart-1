@@ -822,4 +822,4 @@ def index_bar(ax, vals,
 
     # add these last
     ax.add_collection(barCollection)
-return barCollection
+    return barCollection
