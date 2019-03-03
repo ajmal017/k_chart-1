@@ -5,7 +5,7 @@ Version: 0.05
 Date: 2019-03-03
 """
 import numpy as np
-from mpl import candlestick_ohlc
+from KChart.mpl import candlestick_ohlc
 from matplotlib.lines import Line2D
 
 def plot_ohlc(ax, ohlc):
