@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Jan  3 17:36:21 2018
+Created on Wed Jan 3 17:36:21 2018
 @author: easy000000000
+Modified on Sun Mar 3 2019
 """
+# add to syspath
+import os
+import sys
+package_path = os.getcwd()
+if package_path not in sys.path:
+    sys.path.append(package_path)
 
 import numpy as np
 import pandas as pd
