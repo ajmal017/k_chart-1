@@ -4,7 +4,6 @@ Author: easy00000000
 Version: 0.31
 Date: 2018-01-04
 """
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from KChart import figure

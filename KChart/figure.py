@@ -6,11 +6,10 @@ Date: 2017-12-22
 """
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-import pylab
 
 def set_fig(w, h, rows=1, width_factor=3.0, height_factor=0.5, height_ratios=3):
     if(w<0 or h<0):
-        f_size = pylab.gcf().get_size_inches()
+        f_size = plt.gcf().get_size_inches()
         w = f_size[0]*width_factor
         h = f_size[1]*height_factor*(height_ratios+rows-1)
     fig = plt.figure(figsize=(w, h))
