@@ -7,7 +7,7 @@ Date: 2017-12-22
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
-def set_fig(w, h, rows=1, width_factor=3.0, height_factor=0.5, height_ratios=3):
+def set_fig(w, h, rows=1, width_factor=3.0, height_factor=0.5, height_ratios=3):    
     if(w<0 or h<0):
         f_size = plt.gcf().get_size_inches()
         w = f_size[0]*width_factor

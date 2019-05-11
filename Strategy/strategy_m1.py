@@ -10,7 +10,8 @@ Created on Tue May  7 10:01:15 2019
 import numpy as np
 import statsmodels.formula.api as smf
 from Strategy.allocation import w2s
-from Strategy.risk_parity import get_risk_parity_weights
+#from Strategy.risk_parity import get_risk_parity_weights
+from Strategy.risk_parity_matrix import get_risk_parity_weights
 from Algorithm.scale import linear_scale
 
 def get_shares(histp_series, last_shares, last_cash):
@@ -30,14 +31,16 @@ def get_shares(histp_series, last_shares, last_cash):
     return shares, cash
 
 def _get_w(p, mc_budget, mp, dw): 
-    #w0 = np.array([1 / p.shape[1]] * p.shape[1])
-    w0 = mc_budget
-    
+    # calc covariance    
     cov = _get_cov(p)
+    # calc risk budget
     #mc = mc_budget
     mc = _get_mc(p, mc_budget, mp, dw) 
     # calc weights via risk parity
-    w = get_risk_parity_weights(cov, mc, w0)
+    #w0 = np.array([1 / p.shape[1]] * p.shape[1])
+    #w0 = mc_budget
+    #w = get_risk_parity_weights(cov, mc, w0)
+    w = get_risk_parity_weights(cov, mc, 100, len(mc), 10)
     return w
 
 def _get_cov(p):
