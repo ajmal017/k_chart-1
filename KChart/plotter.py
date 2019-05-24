@@ -11,9 +11,9 @@ from matplotlib.lines import Line2D
 def plot_ohlc(ax, ohlc):
     candlestick_ohlc(ax, ohlc, colorup='r', colordown='g')
     
-def plot_y(ax, y, label=None):
+def plot_y(ax, y, label=None, linewidth=1):
     xax = np.arange(len(y))
-    ax.plot(xax, y, label=label)
+    ax.plot(xax, y, label=label, linewidth=linewidth)
     ax.legend()
     
 def plot_bar(ax, h, width=0.2): #h: height of bar

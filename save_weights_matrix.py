@@ -11,4 +11,4 @@ if package_path not in sys.path:
     sys.path.append(package_path)
 from Strategy.risk_parity_matrix import structure_weights_matrix
 
-structure_weights_matrix(10, 4)
+structure_weights_matrix(40, 4)

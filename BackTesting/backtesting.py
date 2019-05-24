@@ -27,8 +27,12 @@ def get_performance(supporting_data, evaluated_data, strategy_function, *args, *
     
     histp_series = supporting_data.copy()
     
+    # revalue sum of diff
+    risk_bias = 0.0
+    
     for t in range(0, len(evaluated_data)):
-        shares, cash = strategy_function(histp_series, last_shares, last_cash, *args, **kwargs)
+        shares, cash, diff = strategy_function(histp_series, last_shares, last_cash, *args, **kwargs)
+        risk_bias = risk_bias + diff
         pfm['Portfolio'][t] = 0.0
         for e in range(0, len(shares)):
             s[s.columns[e]][t]=shares[e]
@@ -43,7 +47,7 @@ def get_performance(supporting_data, evaluated_data, strategy_function, *args, *
     
     accumulated_return, total_return, annual_return, annual_std, sharp_ratio, max_loss = _get_results(pfm, supporting_data, initial_cash)
     
-    return pfm, s, w, accumulated_return, total_return, annual_return, annual_std, sharp_ratio, max_loss
+    return pfm, s, w, accumulated_return, total_return, annual_return, annual_std, sharp_ratio, max_loss, risk_bias
 
 def _real_weights(p, v, s):
     w = np.zeros(len(s))
@@ -52,7 +56,7 @@ def _real_weights(p, v, s):
     return w
 
 def _get_results(original_pfm, supporting_data, initial_cash, annual_factor=52):
-    # structure 0-1 data
+    # structure t=-1 data
     zl = np.zeros(len(supporting_data))
     spd = supporting_data.copy()    
     spd = spd.assign(Portfolio=zl)
@@ -62,6 +66,20 @@ def _get_results(original_pfm, supporting_data, initial_cash, annual_factor=52):
     pfm = pfm.sort_index()
        
     # accumulated return
+    accumulated_return = _calc_accumulated_return(pfm)    
+    # totalreturn
+    total_return = _calc_total_return(accumulated_return)        
+    # annualized return and std
+    annual_return, annual_std = _calc_annual_return_std(accumulated_return)        
+    # sharpe ratio
+    sharpe_ratio = _calc_sharpe_ratio(annual_return, annual_std)        
+    # max loss
+    max_loss = _calc_max_loss(accumulated_return)
+    
+    return accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss
+
+# accumulated return
+def _calc_accumulated_return(pfm):
     r = pfm.copy()
     acm_r = pfm.copy()
     for e in pfm.columns:
@@ -71,64 +89,89 @@ def _get_results(original_pfm, supporting_data, initial_cash, annual_factor=52):
         for t in range(1,len(r)):        
             acm_r[e][t]=(1+r[e][t])*(1+acm_r[e][t-1])-1    
     accumulated_return = acm_r
+    return accumulated_return
     
-    # totalreturn
+# totalreturn
+def _calc_total_return(accumulated_return):
     total_return = []
-    for e in pfm.columns:
-        total_return.append(acm_r[e][len(r)-1])
-        
-    # annualized return and std
+    for e in accumulated_return.columns:
+        total_return.append(accumulated_return[e][-1])
+    return total_return
+
+# annualized return and std
+def _calc_annual_return_std(accumulated_return, annual_factor=52):
     annual_return = []
     annual_std = []
-    r = pfm.copy()
-    rsq = pfm.copy()
-    for e in pfm.columns:
-        r[e] = r[e].pct_change()
-        annual_return.append(np.power(1+r[e].mean(), annual_factor)-1)
-        rsq[e] = r[e]*r[e]
-        annual_std.append(np.power(annual_factor*rsq[e].mean(),0.5))
-        
-    # sharp ratio
-    sharp_ratio = []
-    for i in range(0, len(pfm.columns)):
-        sharp_ratio.append(annual_return[i]/annual_std[i])
-        
-    # max loss
+    r = accumulated_return.copy()
+    for e in accumulated_return.columns:
+        for t in range(1, len(r)):
+            r[e][t] = (1+accumulated_return[e][t])/(1+accumulated_return[e][t-1])-1
+        annual_return.append(r[e].mean()*annual_factor)        
+        annual_std.append((r[e].std()**2 * annual_factor)**0.5)
+    return annual_return, annual_std
+
+# sharpe ratio
+def _calc_sharpe_ratio(annual_return, annual_std, risk_free = 0.0):
+    sharpe_ratio = []
+    for i in range(0, len(annual_return)):
+        sharpe_ratio.append(annual_return[i]/annual_std[i])
+    return sharpe_ratio
+
+# max loss
+def _calc_max_loss(accumulated_return):
     max_loss = []
-    p = pfm.copy()
-    for e in pfm.columns:
+    p = accumulated_return.copy()
+    for e in accumulated_return.columns:
         m=0
         for t in range(1,len(p)):
-            d = min(p[e][t:len(p)])/p[e][t-1] - 1
+            d = min(p[e][t:len(p)]) - p[e][t-1]
             if m>d:
                 m=d
         max_loss.append(m)
+    return max_loss
     
-    return accumulated_return, total_return, annual_return, annual_std, sharp_ratio, max_loss
-
-def display_performance(pfm, s, w, accumulated_return, total_return, annual_return, annual_std, sharp_ratio, max_loss, annual=1):
-    start_time = str(pfm.index[0])
-    end_time = str(pfm.index[-1])
+def get_performance_total(w, accumulated_return, annual_factor=52):
+    # totalreturn
+    total_return = _calc_total_return(accumulated_return)        
+    # annualized return and std
+    annual_return, annual_std = _calc_annual_return_std(accumulated_return)        
+    # sharpe ratio
+    sharpe_ratio = _calc_sharpe_ratio(annual_return, annual_std)        
+    # max loss
+    max_loss = _calc_max_loss(accumulated_return)
+        
+    return w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss
+        
+def display_performance(w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, annual=1):
+    start_time = str(accumulated_return.index[0])
+    end_time = str(accumulated_return.index[-1])
     ep = '{:20}'.format('Evaluated Period:') + start_time[0:10] + ' to ' + end_time[0:10]
     
     title = '{:20}'.format('Assets:')
-    for e in pfm.columns:
+    for e in accumulated_return.columns:
         title= title + '{:>12}'.format(e)
         
     tr ='{:20}'.format('Total Return')
     ar ='{:20}'.format('Annualized Return')
     std = '{:20}'.format('Annualized STD')
-    spr = '{:20}'.format('Sharp Ratio')
+    spr = '{:20}'.format('Sharpe Ratio')
     mloss = '{:20}'.format('Max Loss')
     for i in range(0, len(total_return)):
         tr = tr + '{:>12}'.format('%0.2f%%' %(total_return[i]*100))
         ar = ar + '{:>12}'.format('%0.2f%%' %(annual_return[i]*100))
         std = std + '{:>12}'.format('%0.2f%%' %(annual_std[i]*100))
-        spr = spr + '{:>12}'.format('%0.2f' %(sharp_ratio[i]))
+        spr = spr + '{:>12}'.format('%0.2f' %(sharpe_ratio[i]))
         mloss = mloss + '{:>12}'.format('%0.2f%%' %(max_loss[i]*100))
     
     # annual = 1 : for each year
     if annual > 0:
+        prn_txt =   ep + '\n' + \
+                    title + '\n' + \
+                    ar + '\n' + \
+                    std + '\n' + \
+                    spr + '\n' + \
+                    mloss
+    elif start_time[0:4] == end_time[0:4]:
         prn_txt =   ep + '\n' + \
                     title + '\n' + \
                     ar + '\n' + \

@@ -6,6 +6,7 @@ Created on Mon May  6 21:27:15 2019
 """
 
 # calculate shares based on weights
+# with checking balance and shares rounding to integer
 def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.1, nShare = 100):
     # last_price: each asset price at t-1
     # last_shares: each asset's shares at t-1
@@ -46,6 +47,7 @@ def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.1, nShare =
     
     return shares, cash
 
+# keep stable change from t-1 to t
 def smooth_shares(delta_s, last_s, smooth_factor):
     if last_s > 0:
         if delta_s > 0:
@@ -55,3 +57,16 @@ def smooth_shares(delta_s, last_s, smooth_factor):
             if abs(delta_s) > last_s * smooth_factor:
                 delta_s = - last_s * smooth_factor
     return delta_s
+
+# calculate shares based on weights without considering integer
+def w2s_simple(weights, last_price, last_shares, last_cash):
+    shares = last_shares
+    last_value = last_price.dot(last_shares) + last_cash
+    for i in range(0, len(weights)):
+        shares[i] = weights[i] * last_value / last_price[i]
+        if shares[i] < 1:
+            shares[i] = 0.0
+    cash = last_value - last_price.dot(shares)
+    if cash < 0.01:
+        cash = 0.0
+    return shares, cash

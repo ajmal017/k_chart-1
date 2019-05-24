@@ -20,7 +20,8 @@ from Algorithm.swt import swt, ts_swt
 from Algorithm.mkstatus import trend, strong
 
 # Load data
-source_data = pd.read_csv('spy.csv', parse_dates=True, index_col=0)
+data_path = package_path + '/Data/'
+source_data = pd.read_csv(data_path+'spy2018-12-31.csv', parse_dates=True, index_col=0)
 
 # Calc
 n=256

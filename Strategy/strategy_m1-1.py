@@ -9,16 +9,15 @@ Created on Tue May  7 10:01:15 2019
 
 import numpy as np
 import statsmodels.formula.api as smf
-from Strategy.allocation import w2s
-#from Strategy.risk_parity import get_risk_parity_weights
-from Strategy.risk_parity_matrix import get_risk_parity_weights
+from Strategy.allocation import w2s_simple as w2s
+from Strategy.risk_parity import get_risk_parity_brute
 from Algorithm.scale import linear_scale
 
-def get_shares(histp_series, last_shares, last_cash):
-    mc_budget = [0.1, 0.5, 0.0, 0.4]
+def get_shares(histp_series, last_shares, last_cash, mc_budget):
+    #mc_budget = [0.1, 0.5, 0.2, 0.2]
     # check historical data length
     mp = 52 # weekly data and use last year data as historical
-    dw = 5 # slope 
+    dw = 5 # slope    
     if len(histp_series) >= mp+dw:
         p = histp_series[len(histp_series)-mp-dw:len(histp_series)] #[0:57=52+5]
         w, diff = _get_w(p, mc_budget, mp, dw)
@@ -27,6 +26,7 @@ def get_shares(histp_series, last_shares, last_cash):
         print('Not Enough Historical Data to Calc Weights') 
         shares = last_shares
         cash = last_cash
+    
     return shares, cash, diff
 
 def _get_w(p, mc_budget, mp, dw): 
@@ -35,12 +35,9 @@ def _get_w(p, mc_budget, mp, dw):
     # calc risk budget
     #mc = mc_budget
     mc = _get_mc(p, mc_budget, mp, dw) 
-    # calc weights via risk parity
-    #w0 = np.array([1 / p.shape[1]] * p.shape[1])
-    #w0 = mc_budget
-    #w = get_risk_parity_weights(cov, mc, w0)
-    n_accurate = 100
-    w = get_risk_parity_weights(cov, mc, n_accurate, len(mc)) #, int(n_accurate/10))
+    # brute
+    grid = 2
+    w = get_risk_parity_brute(cov, grid, mc)
     return w
 
 def _get_cov(p):

@@ -5,6 +5,7 @@ Created on Mon May  6 21:19:27 2019
 @author: w
 """
 import numpy as np
+from itertools import product
 from scipy.optimize import minimize
 TOLERANCE = 1e-10
 
@@ -84,3 +85,23 @@ def get_risk_parity_weights(covariances, assets_risk_budget, initial_weights):
 
     # It returns the optimised weights
     return weights
+
+def get_risk_parity_brute(covariances, grid, mc_budget):
+    weights_grid = [l for l in product(range(grid+1), repeat=len(mc_budget)) if sum(l)==grid]
+    ws = np.array(weights_grid)/grid
+    diff_min = 100.0
+    w_choice = None
+    for w0 in ws:        
+        w = get_risk_parity_weights(covariances, mc_budget, w0)
+        wj_cov = np.dot(covariances, w.T)
+        wi_wj_cov = w.T*wj_cov
+        var = np.sum(wi_wj_cov,axis=0)
+        std = np.power(var,0.5)
+        mc = (wi_wj_cov/std).T
+        risk_budget = np.multiply(mc_budget,std)
+        diff = np.power((mc-risk_budget),2)
+        diff_sum = np.sum(diff)
+        if diff_min > diff_sum:
+            w_choice = w
+            diff_min = diff_sum
+    return w_choice, diff_min
