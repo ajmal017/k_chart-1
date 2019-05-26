@@ -30,7 +30,12 @@ end_year = 2018
 start_year = 2014
 # back testing
 basic_tickers = ['SHY', 'SPY']
-mc_budget = [0.0, 0.6, 0.2, 0.2]
+# 没行业
+mc_budget = [0.01, 0.99]
+potential_tickers=['SPY']
+# 选行业
+#mc_budget = [0.02, 0.58, 0.2, 0.2]
+# 没固收
 #basic_tickers = ['SPY']
 #mc_budget = [0.6, 0.2, 0.2]
 sw_tickers = basic_tickers.copy()
@@ -49,7 +54,7 @@ for i in range(start_year, end_year+1):
     # 选择资产类别
     hist_p = wp[wp.index.year==previous_year]
     hist_p = hist_p[potential_tickers]
-    selected_assets = select_assets(hist_p)
+    selected_assets = select_assets(hist_p, dw=250, n_assets=len(mc_budget)-1)
     for e in enumerate(selected_assets):
         selected_tikcers.append(e[1])
     # 准备测试数据
@@ -58,12 +63,11 @@ for i in range(start_year, end_year+1):
     supporting_data = wp[wp.index.year<=previous_year]
     # Performance for Strategy
     start_time = process_time()
-    pfm, s, w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, risk_bias = get_performance(supporting_data, evaluated_data, get_shares, mc_budget)
+    pfm, s, w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, indicators = get_performance(supporting_data, evaluated_data, mc_budget, get_shares)
     print('Running Time: ', process_time()-start_time)
-    print('Total Risk Bias: ', risk_bias)
     display_performance(w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss)
     figname = get_figname(evaluated_year, evaluated_year)
-    plot_performance(w, accumulated_return, figname)
+    plot_performance(w, accumulated_return, indicators, figname)
     # accumulate
     sw = pd.concat([sw, w[sw_tickers]], axis=0)
     sar_tmp = accumulated_return[sar_tickers].copy() + sar_times
@@ -73,5 +77,5 @@ for i in range(start_year, end_year+1):
 w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss = get_performance_total(sw, sar)
 display_performance(w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, annual=0)
 figname = get_figname(start_year, end_year)
-plot_performance(sw, sar, figname)
+plot_performance(sw, sar, None, figname)
     

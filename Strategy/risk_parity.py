@@ -104,4 +104,4 @@ def get_risk_parity_brute(covariances, grid, mc_budget):
         if diff_min > diff_sum:
             w_choice = w
             diff_min = diff_sum
-    return w_choice, diff_min
+    return w_choice #, diff_min
