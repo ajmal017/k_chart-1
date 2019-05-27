@@ -8,6 +8,7 @@ import numpy as np
 from KChart import figure
 import matplotlib.pyplot as plt
 from time import time
+import csv
 
 # use original mc
 def get_performance_1(supporting_data, evaluated_data, mc_budget, strategy_function, *args, **kwargs):
@@ -190,17 +191,17 @@ def get_performance_by_results(w, accumulated_return, annual_factor=52):
 def display_performance(w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, annual=1):
     start_time = str(accumulated_return.index[0])
     end_time = str(accumulated_return.index[-1])
-    ep = '{:20}'.format('Evaluated Period:') + start_time[0:10] + ' to ' + end_time[0:10]
+    ep = '{:20}'.format('Evaluated_Period:') + start_time[0:10] + ' to ' + end_time[0:10]
     
     title = '{:20}'.format('Assets:')
     for e in accumulated_return.columns:
         title= title + '{:>12}'.format(e)
         
-    tr ='{:20}'.format('Total Return')
-    ar ='{:20}'.format('Annualized Return')
-    std = '{:20}'.format('Annualized STD')
-    spr = '{:20}'.format('Sharpe Ratio')
-    mloss = '{:20}'.format('Max Loss')
+    tr ='{:20}'.format('Total_Return')
+    ar ='{:20}'.format('Annualized_Return')
+    std = '{:20}'.format('Annualized_STD')
+    spr = '{:20}'.format('Sharpe_Ratio')
+    mloss = '{:20}'.format('Max_Loss')
     for i in range(0, len(total_return)):
         tr = tr + '{:>12}'.format('%0.2f%%' %(total_return[i]*100))
         ar = ar + '{:>12}'.format('%0.2f%%' %(annual_return[i]*100))
@@ -233,6 +234,45 @@ def display_performance(w, accumulated_return, total_return, annual_return, annu
                     mloss
     print(prn_txt)
     return prn_txt
+
+def csv_performance(csv_file, file_mode, w, accumulated_return, total_return, annual_return, annual_std, sharpe_ratio, max_loss, annual=1):
+    start_time = str(accumulated_return.index[0])
+    end_time = str(accumulated_return.index[-1])
+    ep = ['Evaluated_Period:']
+    ep.append(start_time[0:10] + ' to ' + end_time[0:10])
+    
+    title = ['Assets:']
+    for e in accumulated_return.columns:
+        title.append(e)
+        
+    tr = ['Total_Return']
+    ar = ['Annualized_Return']
+    std = ['Annualized_STD']
+    spr = ['Sharpe_Ratio']
+    mloss = ['Max_Loss']
+    for i in range(0, len(total_return)):
+        tr.append('%0.2f%%' %(total_return[i]*100))
+        ar.append('%0.2f%%' %(annual_return[i]*100))
+        std.append('%0.2f%%' %(annual_std[i]*100))
+        spr.append('%0.2f' %(sharpe_ratio[i]))
+        mloss.append('%0.2f%%' %(max_loss[i]*100))
+    
+    # annual = 1 : for each year
+    with open(csv_file, mode=file_mode) as csv_file:
+        writer = csv.writer(csv_file, lineterminator='\n')
+        writer.writerow(ep)
+        writer.writerow(title)
+        if annual > 0: 
+            pass
+        elif start_time[0:4] == end_time[0:4]:
+            pass
+        else:
+            writer.writerow(tr)
+        writer.writerow(ar)
+        writer.writerow(std)
+        writer.writerow(spr)
+        writer.writerow(mloss)
+    return csv_file
 
 def plot_performance(weights, accumulated_return, indicators=None, figname=None):
     ar = accumulated_return.copy()
@@ -276,10 +316,10 @@ def plot_performance(weights, accumulated_return, indicators=None, figname=None)
         fig.savefig(figname) # save the figure to file
         plt.close(fig)
         
-def get_figname(start_year, end_year):
+def get_figname(start_year, end_year, suffix='jpg'):
     figname = str(time()).split('.')[0]
     if start_year == end_year:
-        figname = figname + '(' + str(start_year) + ').jpg'
+        figname = figname + '(' + str(start_year) + ').' + suffix
     else:
-        figname = figname + '(' + str(start_year) + '-' + str(end_year) + ').jpg'
+        figname = figname + '(' + str(start_year) + '-' + str(end_year) + ').' + suffix
     return figname

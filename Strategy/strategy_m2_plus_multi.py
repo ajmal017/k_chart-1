@@ -48,8 +48,6 @@ def _get_cov(p):
 def _get_mc(p, mc_budget, mp, dw):
     # Bi
     mc_start = [0.8, 0.2, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-    up_level = 0.08
-    dn_level = -0.08
     up_step = 0.05
     dn_step = 0.20
     cut_loss = 0.05
@@ -62,7 +60,10 @@ def _get_mc(p, mc_budget, mp, dw):
         cA, cD = ts_swt(p[p.columns[e]].get_values(), bi_level+1)
         if e <= 1:
             # Slope
-            t, s= est_trend_1(cA[bi_level])        
+            t, s= est_trend_1(cA[bi_level])
+            s_std = s.std()
+            up_level = 2.0*s_std
+            dn_level = -2.0*s_std
             # calc mc
             if t[-1] > 0 and t[-2] >= 0: #正趋势中
                 if s[-1] <= up_level:
@@ -98,9 +99,9 @@ def _get_mc(p, mc_budget, mp, dw):
                     # 如果现值大于mc_start，则表示没止损过，继续定投；否则继续等待
                     if mc[e] >= mc_start[e]:
                         mc[e] = mc_budget[e] + up_step
-                        if mc[e] > 0.5/(len(mc)-2):
-                            mc[e] = 0.5/(len(mc)-2)
-                elif s2[-1] > up_level:
+                        if mc[e] > min(0.2,0.5/(len(mc)-2)):
+                            mc[e] = min(0.2,0.5/(len(mc)-2))
+                elif s2[-1] > 0.0:
                     # cut loss
                     if max(p[p.columns[e]]) > p[p.columns[e]].iloc[-1]*(1+cut_loss):
                         mc[e] = mc_start[e]
@@ -110,6 +111,8 @@ def _get_mc(p, mc_budget, mp, dw):
                     mc[e] = mc_start[e]
             slope[e] = s2[-1]
             est_trend[e] = t2[-1]
+        if mc[e]<0.0001:
+            mc[e]=0.0
         c= c + mc[e] 
     for e in range(0,len(mc)):
         mc[e] = mc[e]/c
