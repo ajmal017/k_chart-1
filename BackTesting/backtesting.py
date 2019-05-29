@@ -16,7 +16,7 @@ def get_performance_1(supporting_data, evaluated_data, mc_budget, strategy_funct
     # historical data of each asset in portfolio
     
     # initial
-    initial_cash = 1000000
+    initial_cash = 500000
     last_shares = np.zeros(len(evaluated_data.columns))
     last_cash = initial_cash
     
@@ -27,7 +27,7 @@ def get_performance_1(supporting_data, evaluated_data, mc_budget, strategy_funct
     s = s.assign(Cash=zl)
     w = evaluated_data.copy()
     indicators = evaluated_data.copy()
-    mc = mc_budget
+    mc = mc_budget.copy()
     
     histp_series = supporting_data.copy()
     
@@ -56,7 +56,7 @@ def get_performance_2(supporting_data, evaluated_data, mc_budget, strategy_funct
     # historical data of each asset in portfolio
     
     # initial
-    initial_cash = 1000000
+    initial_cash = 500000
     last_shares = np.zeros(len(evaluated_data.columns))
     last_cash = initial_cash
     
@@ -67,7 +67,7 @@ def get_performance_2(supporting_data, evaluated_data, mc_budget, strategy_funct
     s = s.assign(Cash=zl)
     w = evaluated_data.copy()
     indicators = evaluated_data.copy()
-    mc = mc_budget
+    mc = mc_budget.copy()
     
     histp_series = supporting_data.copy()
     

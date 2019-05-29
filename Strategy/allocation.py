@@ -7,7 +7,7 @@ Created on Mon May  6 21:27:15 2019
 
 # calculate shares based on weights
 # with checking balance and shares rounding to integer
-def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.1, nShare = 100):
+def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.0, nShare=100):
     # last_price: each asset price at t-1
     # last_shares: each asset's shares at t-1
     # last_cash: cash at t-1
@@ -23,7 +23,7 @@ def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.1, nShare =
             delta_s = smooth_shares(delta_s, last_shares[i], smooth_factor)
         if delta_s > 0 : # buy the asset
             delta_s = abs(delta_s) + 0.5*nShare
-            delta_s =  delta_s // nShare * nShare
+            delta_s =  (delta_s // nShare) * nShare
             shares[i] = last_shares[i] + delta_s
             delta_fund = delta_fund - delta_s * last_price[i] # pay cash
         else: # sell the asset
@@ -44,6 +44,9 @@ def w2s(weights, last_price, last_shares, last_cash, smooth_factor=0.1, nShare =
                 delta_fund = delta_fund + nShare * last_price[i]
     
     cash = delta_fund
+    while cash > last_price[0]*nShare:
+        cash = cash - last_price[0]*nShare
+        shares[0] = shares[0] + nShare
     
     return shares, cash
 
