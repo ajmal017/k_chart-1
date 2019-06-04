@@ -14,8 +14,8 @@ Created on Tue May  7 10:01:15 2019
 import numpy as np
 from Algorithm.indicators import ts_swt
 from Algorithm.mkstatus import est_trend_1
-from Strategy.allocation import w2s_simple as w2s
-#from Strategy.allocation import w2s
+#from Strategy.allocation import w2s_simple as w2s
+from Strategy.allocation import w2s
 
 def get_shares(histp_series, last_shares, last_cash, mc_budget):
     # check historical data length
@@ -72,7 +72,7 @@ def _get_mc(p, mc_budget, mp, dw):
             t, s= est_trend_1(cA[bi_level])
             s_std = s.std()
             up_level = 2.0*s_std
-            dn_level = -2.0*s_std
+            #dn_level = -2.0*s_std
             # calc mc
             if t[-1] > 0 and t[-2] >= 0: #正趋势中
                 if s[-1] <= up_level:

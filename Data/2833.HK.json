@@ -1,0 +1,256 @@
+{
+    "ETF_Data": {
+        "AnnualHoldingsTurnover": "0.00000",
+        "Asset_Allocation": {
+            "Bond": {
+                "Long_ % ": "0.00",
+                "Net_Assets_ % ": "0.00",
+                "Short_ % ": "0.00"
+            },
+            "Cash": {
+                "Long_ % ": "0.20",
+                "Net_Assets_ % ": "0.20",
+                "Short_ % ": "0.00"
+            },
+            "Other": {
+                "Long_ % ": "0.00",
+                "Net_Assets_ % ": "0.00",
+                "Short_ % ": "0.00"
+            },
+            "Property": {
+                "Long_ % ": "0.00",
+                "Net_Assets_ % ": "0.00",
+                "Short_ % ": "0.00"
+            },
+            "Stock": {
+                "Long_ % ": "99.80",
+                "Net_Assets_ % ": "99.80",
+                "Short_ % ": "0.00"
+            }
+        },
+        "Average_Mkt_Cap_Mil": "HKD\u00a0666600",
+        "Company_Name": "Hang Seng Investment Management Ltd",
+        "Company_URL": "http://www.hangseng.com",
+        "Date_Ongoing_Charge": "0000-00-00",
+        "Dividend_Paying_Frequency": "Half-yearly",
+        "ETF_URL": "",
+        "ISIN": "HK2833027330",
+        "Inception_Date": "2004-09-13",
+        "Market_Capitalisation": {
+            "Big": "7.83",
+            "Medium": "0.63",
+            "Mega": "91.54",
+            "Micro": "0.00",
+            "Small": "0.00"
+        },
+        "Max_Annual_Mgmt_Charge": "0.00",
+        "MorningStar": {
+            "Category_Benchmark": "MSCI Hong Kong NR HKD",
+            "Ratio": "4",
+            "Sustainability_Ratio": "4"
+        },
+        "NetExpenseRatio": "0.00000",
+        "Ongoing_Charge": "0.00",
+        "Performance": {
+            "3y_ExpReturn": "21.04",
+            "3y_SharpRatio": "1.38",
+            "3y_Volatility": "13.60",
+            "Returns_10Y": "10.53",
+            "Returns_3Y": "20.27",
+            "Returns_5Y": "13.09",
+            "Returns_YTD": "7.13"
+        },
+        "Sector_Weights": {
+            "Basic Materials": {
+                "Equity_ % ": "0.69",
+                "Relative_to_Category": "0.78"
+            },
+            "Communication Services": {
+                "Equity_ % ": "6.06",
+                "Relative_to_Category": "1.56"
+            },
+            "Consumer Cyclical": {
+                "Equity_ % ": "4.04",
+                "Relative_to_Category": "0.45"
+            },
+            "Consumer Defensive": {
+                "Equity_ % ": "2.26",
+                "Relative_to_Category": "0.69"
+            },
+            "Energy": {
+                "Equity_ % ": "5.44",
+                "Relative_to_Category": "1.35"
+            },
+            "Financial Services": {
+                "Equity_ % ": "48.21",
+                "Relative_to_Category": "1.22"
+            },
+            "Healthcare": {
+                "Equity_ % ": "1.05",
+                "Relative_to_Category": "0.46"
+            },
+            "Industrials": {
+                "Equity_ % ": "4.59",
+                "Relative_to_Category": "0.51"
+            },
+            "Real Estate": {
+                "Equity_ % ": "11.63",
+                "Relative_to_Category": "0.87"
+            },
+            "Technology": {
+                "Equity_ % ": "11.06",
+                "Relative_to_Category": "0.98"
+            },
+            "Utilities": {
+                "Equity_ % ": "4.97",
+                "Relative_to_Category": "1.41"
+            }
+        },
+        "Top_10_Holdings": {
+            "AIA Group Ltd": {
+                "Assets_ % ": "9.23",
+                "Country": "Hong Kong"
+            },
+            "Bank Of China Ltd H": {
+                "Assets_ % ": "3.16",
+                "Country": "China"
+            },
+            "CNOOC Ltd": {
+                "Assets_ % ": "2.54",
+                "Country": "China"
+            },
+            "China Construction Bank Corp H": {
+                "Assets_ % ": "8.22",
+                "Country": "China"
+            },
+            "China Mobile Ltd": {
+                "Assets_ % ": "5.44",
+                "Country": "China"
+            },
+            "HSBC Holdings PLC": {
+                "Assets_ % ": "10.02",
+                "Country": "United Kingdom"
+            },
+            "Hong Kong Exchanges and Clearing Ltd": {
+                "Assets_ % ": "3.17",
+                "Country": "Hong Kong"
+            },
+            "Industrial And Commercial Bank Of Chi...": {
+                "Assets_ % ": "4.85",
+                "Country": "China"
+            },
+            "Ping An Insurance (Group) Co. of Chin...": {
+                "Assets_ % ": "4.54",
+                "Country": "China"
+            },
+            "Tencent Holdings Ltd": {
+                "Assets_ % ": "10.07",
+                "Country": "China"
+            }
+        },
+        "Valuations_Growth": {
+            "Growth_Rates_Portfolio": {
+                "Book-Value Growth": "6.98",
+                "Cash-Flow Growth": "13.36",
+                "Historical Earnings Growth": "-10.13",
+                "Long-Term Projected Earnings Growth": "9.50",
+                "Sales Growth": "5.94"
+            },
+            "Growth_Rates_To_Category": {
+                "Book-Value Growth": "1.01",
+                "Cash-Flow Growth": "1.82",
+                "Historical Earnings Growth": "-0.83",
+                "Long-Term Projected Earnings Growth": "0.99",
+                "Sales Growth": "0.67"
+            },
+            "Valuations_Rates_Portfolio": {
+                "Dividend-Yield Factor": "3.35",
+                "Price/Book": "1.19",
+                "Price/Cash Flow": "3.05",
+                "Price/Prospective Earnings": "9.71",
+                "Price/Sales": "1.86"
+            },
+            "Valuations_Rates_To_Category": {
+                "Dividend-Yield Factor": "1.02",
+                "Price/Book": "0.93",
+                "Price/Cash Flow": "0.57",
+                "Price/Prospective Earnings": "0.81",
+                "Price/Sales": "1.16"
+            }
+        },
+        "World_Regions": {
+            "Africa": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Asia - Developed": {
+                "Equity_ % ": "34.77",
+                "Relative_to_Category": "0.94"
+            },
+            "Asia - Emerging": {
+                "Equity_ % ": "54.56",
+                "Relative_to_Category": "1.02"
+            },
+            "Australasia": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Canada": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Europe - Emerging": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Europe - except Euro": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Eurozone": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "0.00"
+            },
+            "Japan": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "0.00"
+            },
+            "Latin America": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "Middle East": {
+                "Equity_ % ": "0.00",
+                "Relative_to_Category": "-"
+            },
+            "United Kingdom": {
+                "Equity_ % ": "10.04",
+                "Relative_to_Category": "1.35"
+            },
+            "United States": {
+                "Equity_ % ": "0.63",
+                "Relative_to_Category": "0.36"
+            }
+        },
+        "Yield": "2.84"
+    },
+    "General": {
+        "Category": "Hong Kong Equity",
+        "Code": "2833",
+        "CountryISO": "HK",
+        "CountryName": "Hong Kong",
+        "CurrencyCode": "HKD",
+        "CurrencyName": "Hong Kong Dollar",
+        "CurrencySymbol": "HK$",
+        "Description": "Hang Seng Investment Index Funds Series II - Hang Seng Index ETF is an exchange traded fund launched and managed by Hang Seng Investment Management Limited. The fund invests in the public equity markets of Hong Kong. It seeks to invest in the stocks of companies operating across diversified sectors. The fund invests in the stocks of large-cap companies. It seeks to replicate the performance of Hang Seng Index, by investing in the stocks of companies as per their weightings in the index. Hang Seng Investment Index Funds Series II - Hang Seng Index ETF was formed on September 10, 2004 and is domiciled in Hong Kong.",
+        "Exchange": "HK",
+        "Name": "Hang Seng Investment Index Funds Series II - Hang Seng Index ETF",
+        "Type": "ETF"
+    },
+    "Technicals": {
+        "200DayMA": "28.3656",
+        "50DayMA": "29.6443",
+        "52WeekHigh": "32.4000",
+        "52WeekLow": "25.1500"
+    }
+}

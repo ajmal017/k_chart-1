@@ -31,8 +31,8 @@ pl=read_csv(etf_tickers)
 #周线
 wp = pl.resample('W', loffset=pd.offsets.timedelta(days=0)).last().dropna()
 # 选择时间
-end_year = 2018
-start_year = 2004
+end_year = 2019
+start_year = 2018
 hist_p = wp[wp.index.year<=end_year]
 hist_p = hist_p[hist_p.index.year>=start_year]
 evaluated_data = hist_p.copy()
