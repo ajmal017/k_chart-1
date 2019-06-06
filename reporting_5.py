@@ -36,7 +36,8 @@ for e in range(len(tickers)):
     tickers_pl[tickers[e]] = read_ticker(tickers[e])
 
 # 2. load delta_shares from file
-delta_shares_name = '1559835545(-2019).xlsx'
+path = os.getcwd() + "\\Reporting\\results\\"
+delta_shares_name = path + '1559839991(2014-2019).xlsx'
 df = pd.read_excel(open(delta_shares_name,'rb'), sheet_name=0)
 delta_s = df.copy()
 delta_s.set_index("Date", inplace=True)
@@ -63,21 +64,23 @@ mapping_date, mapping_shares, mapping_weights, \
     mapping_closes, mapping_cash, mapping_value = \
     mapping(tickers, delta_s, tickers_pl, init_cash, \
     trans_dates, trans_prices, shares, residual_cashs, 'T')
+print(mapping_cash)
 portfolio = get_portfolio(tickers, mapping_date, \
     mapping_closes, mapping_cash, mapping_value)
 weights = get_pd(tickers, mapping_date, mapping_weights)
 print('4. Mapping Running Time: ', process_time()-start_time)
 #
-annual_r, annual_std, total_r, sharpe_ratio, max_loss \
-    = get_performance(portfolio)
-csv_file = get_filename(portfolio.index[0].year, \
-                       portfolio.index[-1].year, \
-                       'csv', \
-                       'Reporting\\results')
-csv_performance(csv_file, 'w', portfolio, total_r, annual_r, annual_std, \
-                sharpe_ratio, max_loss, 0)
-fig_file = get_filename(portfolio.index[0].year, \
-                       portfolio.index[-1].year, \
-                       'jpg', \
-                       'Reporting\\results')
+start_year = portfolio.index[0].year
+end_year = portfolio.index[-1].year
+csv_file = get_filename(start_year, end_year, 'csv', 'Reporting\\results')
+annual_r, annual_std, total_r, sharpe_ratio, max_loss = get_performance(portfolio)
+csv_performance(csv_file, 'w', portfolio, \
+                total_r, annual_r, annual_std, sharpe_ratio, max_loss, 0)
+# Performance for each year
+for n in range(start_year, end_year+1):
+    p_n = portfolio[portfolio.index.year==n]
+    annual_r, annual_std, total_r, sharpe_ratio, max_loss = get_performance(p_n)
+    csv_performance(csv_file, 'a', p_n, \
+                    total_r, annual_r, annual_std, sharpe_ratio, max_loss)
+fig_file = get_filename(start_year, end_year, 'jpg', 'Reporting\\results')
 plot_performance(portfolio, weights, None, None, fig_file)

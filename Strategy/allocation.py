@@ -73,3 +73,20 @@ def w2s_simple(weights, last_price, last_shares, last_cash):
     if cash < 0.01:
         cash = 0.0
     return shares, cash
+
+# calculate shares based on weights and simply considering integer
+def w2s_simple_int(weights, last_price, last_shares, last_cash, nShare=100):
+    shares = last_shares.copy()
+    last_value = last_price.dot(last_shares) + last_cash
+    for i in range(0, len(weights)):
+        shares[i] = weights[i] * last_value / last_price[i]
+        if shares[i] < last_shares[i]:
+            shares[i] = (shares[i] // nShare - 1) * nShare
+        elif shares[i] > last_shares[i]:
+            shares[i] = (shares[i] // nShare) * nShare
+        if shares[i] < 0:
+            shares[i] = 0.0
+    cash = last_value - last_price.dot(shares)
+    if cash < 0.01:
+        cash = 0.0
+    return shares, cash
