@@ -21,7 +21,7 @@ from Algorithm.scale import linear_scale
 
 # Load data
 data_path = package_path + '/Data/'
-source_data = pd.read_csv(data_path+'XLU2018-12-31.csv', parse_dates=True, index_col=0)
+source_data = pd.read_csv(data_path+'2833.csv', parse_dates=True, index_col=0)
 
 # 准备测试数据
 end_year = 2018

@@ -53,6 +53,7 @@ def save_eod(tickers, market='US'):
     csv_path = os.getcwd() + "\\" #Data\\"
     for e in tickers:
         #df = get_eod_data(e, market, None, None, api_token, None)
+        print(e)
         symbol = e + '.' + market
         df = get_historical_data(symbol)
         df = df.rename({'Adjusted_close':'Adj Close'}, axis=1)

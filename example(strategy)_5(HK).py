@@ -9,18 +9,16 @@ import sys
 package_path = os.getcwd()
 if package_path not in sys.path:
     sys.path.append(package_path)
-import pandas as pd
 from time import process_time
 
 from Data.get_data import read_csv
 from BackTesting.backtesting import get_performance_2 as get_performance
 #from BackTesting.backtesting import get_figname
 from Reporting.display import get_filename
-from Strategy.strategy_m5 import get_shares
+from Strategy.strategy_m5_trend_std_mean import get_shares
 
 # 读取数据
-etf_tickers=['SHY','SPY','XLB','XLC','XLE','XLF','XLI','XLK','XLP','XLRE','XLU','XLV','XLY']
-basic_tickers = ['SHY','SPY','XLB','XLE','XLF','XLI','XLK','XLP','XLU','XLV','XLY']
+basic_tickers = ['SHY','2833']
 etf_tickers = basic_tickers 
 mc_budget = [0.8, 0.2]
 if len(etf_tickers)>2:
@@ -28,10 +26,10 @@ if len(etf_tickers)>2:
         mc_budget.append(0.0)
 pl=read_csv(etf_tickers)
 #周线
-wp = pl.resample('W', loffset=pd.offsets.timedelta(days=0)).last().dropna()
+wp = pl#pl.resample('W', loffset=pd.offsets.timedelta(days=0)).last().dropna()
 # 选择时间
 end_year = 2019
-start_year = 2019
+start_year = 2014
 hist_p = wp[wp.index.year<=end_year]
 hist_p = hist_p[hist_p.index.year>=start_year]
 evaluated_data = hist_p.copy()

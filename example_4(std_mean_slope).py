@@ -23,11 +23,11 @@ from Algorithm.scale import linear_scale
 
 # Load data
 data_path = package_path + '/Data/'
-source_data = pd.read_csv(data_path+'XLE2018-12-31.csv', parse_dates=True, index_col=0)
+source_data = pd.read_csv(data_path+'2833.csv', parse_dates=True, index_col=0)
 
 # 准备测试数据
 end_year = 2018
-start_year = 2003
+start_year = 2013
 hist_p = source_data[source_data.index.year<=end_year]
 hist_p = hist_p[hist_p.index.year>=start_year]
 df = hist_p.copy()
@@ -53,6 +53,6 @@ df['est_trend'], df['slope'] = est_trend_1(df['diff'])
 df = df[df.index.year>=start_year+1]
 # plot ohlc candlestick
 plot_chart(df,
-           sub_indicator_cols=['slope', 'zeros'],# 'cross'],
+           sub_indicator_cols=['diff', 'zeros'],
            bi_cols=['bi_post']
            )

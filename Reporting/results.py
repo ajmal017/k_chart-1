@@ -89,10 +89,10 @@ def get_performance(portfolio):
     max_loss = np.zeros(len(portfolio.columns))
     for e in range(len(portfolio.columns)):
         p = portfolio[portfolio.columns[e]]
-        r = _calc_r(p)
+        #r = _calc_r(p)
         total_r[e] = _calc_total_r(p)
-        annual_r[e] = _calc_annual_r(r)
-        annual_std[e] = _calc_annual_std(r)        
+        annual_r[e] = _calc_annual_r(p)
+        annual_std[e] = _calc_annual_std(p)        
         sharpe_ratio[e] = _calc_sharpe_ratio(annual_r[e], annual_std[e])
         max_loss[e] = _calc_max_loss(p)
     return annual_r, annual_std, total_r, sharpe_ratio, max_loss
@@ -104,16 +104,32 @@ def _calc_r(p):
     return r
 
 # annual return
+def _calc_annual_r(p, annual_factor=365):
+    total_r = p.iloc[-1] / p.iloc[0] - 1
+    days = (p.index[-1] - p.index[0]).days
+    annual_r = (1+total_r)**(annual_factor/days) - 1
+    return annual_r
+'''
 def _calc_annual_r(r, annual_factor=360):
     days = (r.index[-1] - r.index[0]).days
     annual_r = (1+r.mean())**(len(r)*annual_factor/days) - 1
     return annual_r
+'''
 
 # annual std
+def _calc_annual_std(p, annual_factor=365):
+    r = p.pct_change()
+    r.fillna(0.0, inplace=True)
+    days = (p.index[-1] - p.index[0]).days
+    r = (1+r)**(len(p)/days) - 1
+    annual_std = r.std()*(annual_factor**0.5)
+    return annual_std
+'''
 def _calc_annual_std(r, annual_factor=360):
     days = (r.index[-1] - r.index[0]).days
     annual_std = r.std()*((len(r)*annual_factor/days)**0.5)
     return annual_std
+'''
 
 # total return
 def _calc_total_r(p):

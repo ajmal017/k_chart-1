@@ -16,12 +16,13 @@ import pandas as pd
 
 from KChart import k_chart
 from Algorithm.twinety import bi
-from Algorithm.swt import swt, ts_swt
-from Algorithm.mkstatus import trend, strong
+from Algorithm.indicators import swt, ts_swt
+from Algorithm.mkstatus import strong
+from Algorithm.mkstatus import est_trend_1 as trend
 
 # Load data
 data_path = package_path + '/Data/'
-source_data = pd.read_csv(data_path+'spy2018-12-31.csv', parse_dates=True, index_col=0)
+source_data = pd.read_csv(data_path+'7300.csv', parse_dates=True, index_col=0)
 
 # Calc
 n=256
@@ -39,13 +40,13 @@ df['wt']=cA[2]
 # calc main_indicator
 df['ma'] = df['Close'].rolling(12,center=True,min_periods=1).mean()
 # calc sub_indicator
-df['trend'] = trend(df['bi2'])
-df['strong'] = strong(df['bi1'],df['trend'])
+#df['trend'] = trend(df['bi2'])
+#df['strong'] = strong(df['bi1'],df['trend'])
 
 # plot ohlc candlestick
 df.k_chart(
-        main_indicator_cols=['wt','ma'],
+        main_indicator_cols=['wt'],#'ma'],
         volume_col=['Volume'], 
-        sub_indicator_cols=['trend','strong'], 
-        bi_cols=['bi2','bi1','bi']
+#        sub_indicator_cols=['trend','strong'], 
+        bi_cols=['bi2'] #,'bi1','bi']
         )

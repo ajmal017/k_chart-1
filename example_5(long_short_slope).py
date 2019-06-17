@@ -21,14 +21,14 @@ from Data.get_data import read_csv
 
 # Load data
 # set end_date
-end_date = '2018-12-31'
+end_date = ''
 # 读取数据
-etf_tickers=['SPY']
+etf_tickers=['2833']
 source_data = read_csv(etf_tickers, end_date)
 
 # 准备测试数据
 end_year = 2018
-start_year = 2003
+start_year = 2013
 hist_p = source_data[source_data.index.year<=end_year]
 hist_p = hist_p[hist_p.index.year>=start_year]
 wp = hist_p.resample('W', loffset=pd.offsets.timedelta(days=-6)).mean()

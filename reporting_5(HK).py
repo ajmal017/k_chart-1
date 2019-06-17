@@ -29,31 +29,37 @@ from Reporting.display import get_filename
 from Reporting.display import csv_performance, plot_performance
 from Data.get_data import read_ticker
 
+init_cash = 500000
+
 # 1. load historical data in a dict and key is ticker
-tickers=['SHY','SPY','XLB','XLE','XLF','XLI','XLK','XLP','XLU','XLV','XLY']
+tickers=['SHY','2833']
 tickers_pl = {}
 for e in range(len(tickers)):
     tickers_pl[tickers[e]] = read_ticker(tickers[e])
 
-# 2. load delta_shares from file
+# 2.1 load delta_shares from file
 path = os.getcwd() + "\\Reporting\\results\\"
-delta_shares_name = path + '1560225707(2014-2019).xlsx'
+delta_shares_name = path + '1560603455(2014-2019).xlsx'
 df = pd.read_excel(open(delta_shares_name,'rb'), sheet_name=0)
 delta_s = df.copy()
 delta_s.set_index("Date", inplace=True)
 tickers = delta_s.columns
 
+# 2.2 run back test to generate delta_shares
+#start_time = process_time()
+#delta_s = back_test(tickers, tickers_pl, init_cash)
+#print('2.2 Est Transaction Running Time: ', process_time()-start_time)
+
 # 3. load transaction prices
 # 3.1 scenario one: estimate transaction prices, transaction dates, shares at each t and cash at each t
 start_time = process_time()
-init_cash = 500000
 trans_dates, trans_prices, shares, residual_cashs \
     = est_transacton_prices(tickers, delta_s, tickers_pl, init_cash)
 print('3.1 Est Transaction Running Time: ', process_time()-start_time)
 
 # 3.2 scenario two: input transaction prices
 
-# 4. calc new value with new trades
+# 4. Mapping - calc new value with new trades
 # shares, cash and value at t = 0 at delta_s[0]'s date
 # move date by date, calc value for each date
 # if reach delta_s.date, read the delta_s and wait placement
@@ -63,7 +69,8 @@ start_time = process_time()
 mapping_date, mapping_shares, mapping_weights, \
     mapping_closes, mapping_cash, mapping_value = \
     mapping(tickers, delta_s, tickers_pl, init_cash, \
-    trans_dates, trans_prices, shares, residual_cashs, 'T')
+    trans_dates, trans_prices, shares, residual_cashs, 'D')
+#print(mapping_value)
 #print(mapping_cash)
 portfolio = get_portfolio(tickers, mapping_date, \
     mapping_closes, mapping_cash, mapping_value)
