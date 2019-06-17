@@ -60,6 +60,6 @@ df = df[df.index.year>=start_year+1]
 
 # plot ohlc candlestick
 plot_chart(df,
-           sub_indicator_cols=['risk', 'zeros'],
+           sub_indicator_cols=['est_trend_2', 'diff_wt', 'zeros'],
            bi_cols=['bi_post']
            )
