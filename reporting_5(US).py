@@ -37,7 +37,7 @@ for e in range(len(tickers)):
 
 # 2. load delta_shares from file
 path = os.getcwd() + "\\Reporting\\results\\"
-delta_shares_name = path + '1560225707(2014-2019).xlsx'
+delta_shares_name = path + '1562040270(2004-2019).xlsx'
 df = pd.read_excel(open(delta_shares_name,'rb'), sheet_name=0)
 delta_s = df.copy()
 delta_s.set_index("Date", inplace=True)
